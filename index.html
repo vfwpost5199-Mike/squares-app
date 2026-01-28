@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Class of 2026 Squares Number Draw</title>
+
+<!-- PWA additions -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d6efd">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<style>
+:root{
+  --primary:#0d6efd;
+  --football:#8B4513;
+  --bg:#f4f4f4;
+  --border:#e5e7eb;
+  --radius:12px;
+  --shadow:0 4px 10px rgba(0,0,0,.08);
+  --font:'Segoe UI',Tahoma,Verdana,sans-serif;
+}
+body{
+  margin:0;
+  padding:20px;
+  font-family:var(--font);
+  background:var(--bg);
+  text-align:center;
+}
+.container{
+  max-width:960px;
+  margin:auto;
+  background:#fff;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  border:1px solid var(--border);
+  padding:22px;
+}
+h1{color:var(--primary);margin:0 0 6px;}
+p{color:#666;margin:0 0 16px;}
+
+.controls,.soundbar{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+button{
+  padding:14px 22px;
+  border:none;
+  border-radius:10px;
+  font-size:1.05em;
+  cursor:pointer;
+}
+button:disabled{opacity:.6;cursor:not-allowed;}
+#draw-button{background:var(--primary);color:#fff;}
+#reset-button{background:#111827;color:#fff;}
+
+.soundbar{
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px;
+  background:#fff;
+}
+#volume{width:200px;}
+
+#status{
+  font-size:1.15em;
+  font-weight:800;
+  color:var(--primary);
+  min-height:1.6em;
+  margin:10px 0 18px;
+}
+
+.teams{display:flex;gap:18px;}
+.team{
+  width:50%;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:14px;
+  background:#fff;
+}
+
+.team-logo{
+  max-width:100%;
+  max-height:90px;
+  display:block;
+  margin:4px auto 10px;
+}
+
+.football-draw-area{
+  height:110px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.football{
+  width:86px;
+  height:54px;
+  background:var(--football);
+  border-radius:50%;
+  color:#fff;
+  font-size:1.9em;
+  font-weight:900;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  animation:dropIn .55s ease-out;
+  box-shadow:0 6px 10px rgba(0,0,0,.18);
+  position:relative;
+}
+.football::before{
+  content:'';
+  position:absolute;
+  width:4px;
+  height:42%;
+  background:#fff;
+}
+.football::after{
+  content:'';
+  position:absolute;
+  width:26%;
+  height:32px;
+  border-left:3px solid #fff;
+  border-right:3px solid #fff;
+}
+@keyframes dropIn{
+  from{transform:translateY(-70px) scale(.6);opacity:0;}
+  to{transform:none;opacity:1;}
+}
+
+.axis-wrap{
+  border:2px solid var(--border);
+  border-radius:10px;
+  padding:10px;
+  background:#fbfbfb;
+}
+.axis-label{
+  display:flex;
+  justify-content:space-between;
+  font-weight:800;
+  margin-bottom:8px;
+}
+.axis-strip{
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  gap:8px;
+}
+.axis-cell{
+  padding:10px 0;
+  font-size:1.25em;
+  font-weight:900;
+  border-radius:10px;
+  background:var(--primary);
+  color:#fff;
+}
+.axis-cell.pending{
+  background:#e5e7eb;
+  color:#111;
+}
+
+details.audit{
+  margin-top:14px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px;
+  text-align:left;
+}
+
+@media(max-width:820px){
+  .teams{flex-direction:column;}
+  .team{width:100%;}
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+<h1>Class of 2026 Squares Number Draw</h1>
+<p>Click Start to generate the official 0–9 axis order</p>
+
+<div class="controls">
+  <button id="draw-button">Start The Draw!</button>
+  <button id="reset-button">Reset / Clear</button>
+</div>
+
+<div class="soundbar">
+  <label><input type="checkbox" id="sound-enabled" checked> Sound</label>
+  <label>Volume <input type="range" id="volume" min="0" max="100" value="65"></label>
+</div>
+
+<div id="status" role="status" aria-live="polite"></div>
+
+<div class="teams">
+  <div class="team">
+    <img src="NEPat.png" alt="New England Patriots" class="team-logo">
+    <div class="football-draw-area" id="home-draw-area"></div>
+    <div class="axis-wrap">
+      <div class="axis-label"><span>Home Axis</span><small id="home-progress">0 / 10</small></div>
+      <div class="axis-strip" id="home-axis"></div>
+    </div>
+  </div>
+
+  <div class="team">
+    <img src="SeaHorz.png" alt="Seattle Seahawks" class="team-logo">
+    <div class="football-draw-area" id="visitor-draw-area"></div>
+    <div class="axis-wrap">
+      <div class="axis-label"><span>Visitor Axis</span><small id="visitor-progress">0 / 10</small></div>
+      <div class="axis-strip" id="visitor-axis"></div>
+    </div>
+  </div>
+</div>
+
+<details class="audit">
+<summary>Show draw audit</summary>
+<pre id="audit-log"></pre>
+</details>
+</div>
+
+<script>
+/* ---- your existing JS is unchanged ---- */
+const DRAW_SPEED_MS = 1500;
+const PAUSE_AFTER_TEN_MS = 3000;
+const FINAL_WHISTLE_GAP_MS = 900;
+
+let isDrawing=false;
+
+const drawButton=document.getElementById('draw-button');
+const resetButton=document.getElementById('reset-button');
+const statusDiv=document.getElementById('status');
+
+const homeDrawArea=document.getElementById('home-draw-area');
+const visitorDrawArea=document.getElementById('visitor-draw-area');
+const homeAxis=document.getElementById('home-axis');
+const visitorAxis=document.getElementById('visitor-axis');
+const homeProgress=document.getElementById('home-progress');
+const visitorProgress=document.getElementById('visitor-progress');
+const auditLog=document.getElementById('audit-log');
+
+const soundEnabled=document.getElementById('sound-enabled');
+const volume=document.getElementById('volume');
+
+const cheer=new Audio('cheer.mp3');
+const whistle=new Audio('whistle.mp3');
+cheer.loop=true;
+
+function setVolume(){
+  const v=volume.value/100;
+  cheer.volume=v*.7;
+  whistle.volume=v;
+}
+setVolume();
+volume.oninput=setVolume;
+
+function play(a){
+  if(!soundEnabled.checked) return;
+  a.currentTime=0;
+  a.play().catch(()=>{});
+}
+function stop(a){a.pause();a.currentTime=0;}
+
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function build(strip){
+  strip.innerHTML='';
+  for(let i=0;i<10;i++){
+    const d=document.createElement('div');
+    d.className='axis-cell pending';
+    d.textContent='–';
+    strip.appendChild(d);
+  }
+}
+
+async function drawOne(num,area,strip,idx,progress){
+  area.innerHTML=`<div class="football">${num}</div>`;
+  await new Promise(r=>setTimeout(r,DRAW_SPEED_MS));
+  strip.children[idx].classList.remove('pending');
+  strip.children[idx].textContent=num;
+  progress.textContent=`${idx+1} / 10`;
+  if(idx===9){
+    play(whistle);
+    await new Promise(r=>setTimeout(r,PAUSE_AFTER_TEN_MS));
+  }
+}
+
+async function whistleTwice(){
+  play(whistle);
+  await new Promise(r=>setTimeout(r,FINAL_WHISTLE_GAP_MS));
+  play(whistle);
+}
+
+async function start(){
+  if(isDrawing) return;
+  isDrawing=true;
+  drawButton.disabled=resetButton.disabled=true;
+
+  build(homeAxis);build(visitorAxis);
+  homeProgress.textContent=visitorProgress.textContent='0 / 10';
+  homeDrawArea.innerHTML=visitorDrawArea.innerHTML='';
+  auditLog.textContent='';
+
+  play(cheer);
+
+  const h=shuffle([0,1,2,3,4,5,6,7,8,9]);
+  const v=shuffle([0,1,2,3,4,5,6,7,8,9]);
+
+  statusDiv.textContent='Drawing Home Team...';
+  for(let i=0;i<10;i++) await drawOne(h[i],homeDrawArea,homeAxis,i,homeProgress);
+
+  statusDiv.textContent='Drawing Visitor Team...';
+  for(let i=0;i<10;i++) await drawOne(v[i],visitorDrawArea,visitorAxis,i,visitorProgress);
+
+  statusDiv.textContent='All Numbers Drawn!';
+  auditLog.textContent=`Home Axis: ${h.join(' ')}\nVisitor Axis: ${v.join(' ')}`;
+
+  await whistleTwice();
+  stop(cheer);
+
+  drawButton.textContent='Draw Again!';
+  drawButton.disabled=resetButton.disabled=false;
+  isDrawing=false;
+}
+
+drawButton.onclick=start;
+resetButton.onclick=()=>{
+  if(isDrawing) return;
+  stop(cheer);
+  statusDiv.textContent='';
+  homeDrawArea.innerHTML=visitorDrawArea.innerHTML='';
+  build(homeAxis);build(visitorAxis);
+  homeProgress.textContent=visitorProgress.textContent='0 / 10';
+  auditLog.textContent='';
+  drawButton.textContent='Start The Draw!';
+};
+
+build(homeAxis);build(visitorAxis);
+</script>
+
+<!-- Service worker registration -->
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js");
+  });
+}
+</script>
+
+</body>
+</html>
+
