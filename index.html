@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Class of 2026 Squares Number Draw</title>
+<title>Squares Number Draw</title>
 
-<!-- PWA additions -->
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d6efd">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -20,327 +19,481 @@
   --shadow:0 4px 10px rgba(0,0,0,.08);
   --font:'Segoe UI',Tahoma,Verdana,sans-serif;
 }
-body{
-  margin:0;
-  padding:20px;
-  font-family:var(--font);
-  background:var(--bg);
-  text-align:center;
-}
-.container{
-  max-width:960px;
-  margin:auto;
-  background:#fff;
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  border:1px solid var(--border);
-  padding:22px;
-}
+body{margin:0;padding:20px;font-family:var(--font);background:var(--bg);text-align:center;}
+.container{max-width:980px;margin:auto;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);padding:22px;}
 h1{color:var(--primary);margin:0 0 6px;}
 p{color:#666;margin:0 0 16px;}
 
+.team-select{
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:14px;
+  background:#fff;
+  margin: 10px 0 16px;
+  text-align:left;
+}
+.team-select h2{margin:0 0 10px;font-size:1.05rem;color:#111;}
+.team-select .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;}
+.field{flex:1 1 260px;}
+.field label{display:block;font-weight:800;margin:0 0 6px;}
+.field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:1rem;background:#fff;}
+.helper{margin-top:8px;color:#666;font-weight:600;font-size:.95rem;}
+
 .controls,.soundbar{
-  display:flex;
-  gap:12px;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin-bottom:12px;
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;
 }
-button{
-  padding:14px 22px;
-  border:none;
-  border-radius:10px;
-  font-size:1.05em;
-  cursor:pointer;
-}
+button{padding:14px 22px;border:none;border-radius:10px;font-size:1.05em;cursor:pointer;}
 button:disabled{opacity:.6;cursor:not-allowed;}
 #draw-button{background:var(--primary);color:#fff;}
 #reset-button{background:#111827;color:#fff;}
-
-.soundbar{
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:10px;
-  background:#fff;
-}
+.soundbar{border:1px solid var(--border);border-radius:12px;padding:10px;background:#fff;}
 #volume{width:200px;}
-
-#status{
-  font-size:1.15em;
-  font-weight:800;
-  color:var(--primary);
-  min-height:1.6em;
-  margin:10px 0 18px;
-}
+#status{font-size:1.15em;font-weight:800;color:var(--primary);min-height:1.6em;margin:10px 0 18px;}
 
 .teams{display:flex;gap:18px;}
-.team{
-  width:50%;
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:14px;
-  background:#fff;
-}
+.team{width:50%;border:1px solid var(--border);border-radius:var(--radius);padding:14px;background:#fff;}
+.team-logo{max-width:100%;max-height:90px;display:block;margin:4px auto 10px;}
+.team-header-text{font-weight:900;font-size:1.15rem;margin:4px 0 10px;color:#111;text-align:center;}
 
-.team-logo{
-  max-width:100%;
-  max-height:90px;
-  display:block;
-  margin:4px auto 10px;
-}
-
-.football-draw-area{
-  height:110px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
+.football-draw-area{height:110px;display:flex;justify-content:center;align-items:center;}
 .football{
-  width:86px;
-  height:54px;
-  background:var(--football);
-  border-radius:50%;
-  color:#fff;
-  font-size:1.9em;
-  font-weight:900;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  animation:dropIn .55s ease-out;
-  box-shadow:0 6px 10px rgba(0,0,0,.18);
-  position:relative;
+  width:86px;height:54px;background:var(--football);border-radius:50%;
+  color:#fff;font-size:1.9em;font-weight:900;display:flex;justify-content:center;align-items:center;
+  animation:dropIn .55s ease-out;box-shadow:0 6px 10px rgba(0,0,0,.18);position:relative;
 }
-.football::before{
-  content:'';
-  position:absolute;
-  width:4px;
-  height:42%;
-  background:#fff;
-}
-.football::after{
-  content:'';
-  position:absolute;
-  width:26%;
-  height:32px;
-  border-left:3px solid #fff;
-  border-right:3px solid #fff;
-}
-@keyframes dropIn{
-  from{transform:translateY(-70px) scale(.6);opacity:0;}
-  to{transform:none;opacity:1;}
-}
+.football::before{content:'';position:absolute;width:4px;height:42%;background:#fff;}
+.football::after{content:'';position:absolute;width:26%;height:32px;border-left:3px solid #fff;border-right:3px solid #fff;}
+@keyframes dropIn{from{transform:translateY(-70px) scale(.6);opacity:0;}to{transform:none;opacity:1;}}
 
-.axis-wrap{
-  border:2px solid var(--border);
-  border-radius:10px;
-  padding:10px;
-  background:#fbfbfb;
-}
-.axis-label{
-  display:flex;
-  justify-content:space-between;
-  font-weight:800;
-  margin-bottom:8px;
-}
-.axis-strip{
-  display:grid;
-  grid-template-columns:repeat(10,1fr);
-  gap:8px;
-}
-.axis-cell{
-  padding:10px 0;
-  font-size:1.25em;
-  font-weight:900;
-  border-radius:10px;
-  background:var(--primary);
-  color:#fff;
-}
-.axis-cell.pending{
-  background:#e5e7eb;
-  color:#111;
-}
+.axis-wrap{border:2px solid var(--border);border-radius:10px;padding:10px;background:#fbfbfb;}
+.axis-label{display:flex;justify-content:space-between;font-weight:800;margin-bottom:8px;}
+.axis-strip{display:grid;grid-template-columns:repeat(10,1fr);gap:8px;}
+.axis-cell{padding:10px 0;font-size:1.25em;font-weight:900;border-radius:10px;background:var(--primary);color:#fff;}
+.axis-cell.pending{background:#e5e7eb;color:#111;}
 
-details.audit{
-  margin-top:14px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:10px;
-  text-align:left;
-}
+details.audit{margin-top:14px;border:1px solid var(--border);border-radius:10px;padding:10px;text-align:left;}
 
-@media(max-width:820px){
-  .teams{flex-direction:column;}
-  .team{width:100%;}
-}
+@media(max-width:820px){.teams{flex-direction:column;}.team{width:100%;}}
 </style>
 </head>
 
 <body>
 <div class="container">
-<h1>Class of 2026 Squares Number Draw</h1>
-<p>Click Start to generate the official 0–9 axis order</p>
+  <h1>Squares Number Draw</h1>
+  <p>Select the matchup first, then run the number draw.</p>
 
-<div class="controls">
-  <button id="draw-button">Start The Draw!</button>
-  <button id="reset-button">Reset / Clear</button>
-</div>
+  <!-- TEAM SELECT (required IDs) -->
+  <div class="team-select">
+    <h2>Step 1: Select Teams</h2>
+    <div class="row">
+      <div class="field">
+        <label for="visitor-select">Visitor Team (select first)</label>
+        <select id="visitor-select">
+          <option value="">-- Choose Visitor Team --</option>
+        </select>
+      </div>
 
-<div class="soundbar">
-  <label><input type="checkbox" id="sound-enabled" checked> Sound</label>
-  <label>Volume <input type="range" id="volume" min="0" max="100" value="65"></label>
-</div>
+      <div class="field">
+        <label for="home-select">Home Team</label>
+        <select id="home-select" disabled>
+          <option value="">-- Choose Home Team --</option>
+        </select>
+      </div>
+    </div>
+    <div class="helper" id="team-helper">Choose the Visitor team first. Then select the Home team to unlock the draw.</div>
+  </div>
 
-<div id="status" role="status" aria-live="polite"></div>
+  <!-- CONTROLS (required IDs) -->
+  <div class="controls">
+    <button id="draw-button" disabled>Start The Draw!</button>
+    <button id="reset-button">Reset / Clear</button>
+  </div>
 
-<div class="teams">
-  <div class="team">
-    <img src="NEPat.png" alt="New England Patriots" class="team-logo">
-    <div class="football-draw-area" id="home-draw-area"></div>
-    <div class="axis-wrap">
-      <div class="axis-label"><span>Home Axis</span><small id="home-progress">0 / 10</small></div>
-      <div class="axis-strip" id="home-axis"></div>
+  <!-- SOUND BAR (required IDs) -->
+  <div class="soundbar">
+    <label><input type="checkbox" id="sound-enabled" checked> Sound</label>
+    <label>Volume <input type="range" id="volume" min="0" max="100" value="65"></label>
+  </div>
+
+  <div id="status" role="status" aria-live="polite"></div>
+
+  <div class="teams">
+    <!-- HOME (required IDs) -->
+    <div class="team">
+      <img id="home-logo" class="team-logo" alt="" style="display:none;">
+      <div id="home-text" class="team-header-text" style="display:none;"></div>
+
+      <div class="football-draw-area" id="home-draw-area"></div>
+
+      <div class="axis-wrap">
+        <div class="axis-label"><span>Home Axis</span><small id="home-progress">0 / 10</small></div>
+        <div class="axis-strip" id="home-axis"></div>
+      </div>
+    </div>
+
+    <!-- VISITOR (required IDs) -->
+    <div class="team">
+      <img id="visitor-logo" class="team-logo" alt="" style="display:none;">
+      <div id="visitor-text" class="team-header-text" style="display:none;"></div>
+
+      <div class="football-draw-area" id="visitor-draw-area"></div>
+
+      <div class="axis-wrap">
+        <div class="axis-label"><span>Visitor Axis</span><small id="visitor-progress">0 / 10</small></div>
+        <div class="axis-strip" id="visitor-axis"></div>
+      </div>
     </div>
   </div>
 
-  <div class="team">
-    <img src="SeaHorz.png" alt="Seattle Seahawks" class="team-logo">
-    <div class="football-draw-area" id="visitor-draw-area"></div>
-    <div class="axis-wrap">
-      <div class="axis-label"><span>Visitor Axis</span><small id="visitor-progress">0 / 10</small></div>
-      <div class="axis-strip" id="visitor-axis"></div>
-    </div>
-  </div>
+  <details class="audit">
+    <summary>Show draw audit</summary>
+    <pre id="audit-log"></pre>
+  </details>
 </div>
 
-<details class="audit">
-<summary>Show draw audit</summary>
-<pre id="audit-log"></pre>
-</details>
-</div>
-
+<!-- SCRIPT (the updated safe script you added) -->
 <script>
-/* ---- your existing JS is unchanged ---- */
-const DRAW_SPEED_MS = 1500;
-const PAUSE_AFTER_TEN_MS = 3000;
-const FINAL_WHISTLE_GAP_MS = 900;
+window.addEventListener("DOMContentLoaded", () => {
+  try {
+    const requiredIds = [
+      "draw-button","reset-button","status",
+      "home-draw-area","visitor-draw-area",
+      "home-axis","visitor-axis","home-progress","visitor-progress",
+      "audit-log",
+      "visitor-select","home-select","team-helper",
+      "home-logo","visitor-logo","home-text","visitor-text",
+      "sound-enabled","volume"
+    ];
+    const missing = requiredIds.filter(id => !document.getElementById(id));
+    if (missing.length) {
+      document.body.innerHTML = `
+        <div style="font-family:Segoe UI,Tahoma,Verdana,sans-serif;padding:20px;max-width:900px;margin:20px auto;">
+          <h2 style="color:#b91c1c;margin:0 0 10px;">Page loaded but required HTML elements are missing</h2>
+          <pre style="background:#f3f4f6;border:1px solid #e5e7eb;padding:12px;border-radius:10px;overflow:auto;">${missing.join("\n")}</pre>
+        </div>`;
+      return;
+    }
 
-let isDrawing=false;
+    const NFL_TEAMS = [
+      "Arizona Cardinals","Atlanta Falcons","Baltimore Ravens","Buffalo Bills","Carolina Panthers",
+      "Chicago Bears","Cincinnati Bengals","Cleveland Browns","Dallas Cowboys","Denver Broncos",
+      "Detroit Lions","Green Bay Packers","Houston Texans","Indianapolis Colts","Jacksonville Jaguars",
+      "Kansas City Chiefs","Las Vegas Raiders","Los Angeles Chargers","Los Angeles Rams","Miami Dolphins",
+      "Minnesota Vikings","New England Patriots","New Orleans Saints","New York Giants","New York Jets",
+      "Philadelphia Eagles","Pittsburgh Steelers","San Francisco 49ers","Seattle Seahawks","Tampa Bay Buccaneers",
+      "Tennessee Titans","Washington Commanders"
+    ];
 
-const drawButton=document.getElementById('draw-button');
-const resetButton=document.getElementById('reset-button');
-const statusDiv=document.getElementById('status');
+    const TEAM_LOGOS = {
+      "Arizona Cardinals":"nfl-arizona-cardinals.png",
+      "Atlanta Falcons":"nfl-atlanta-falcons.png",
+      "Baltimore Ravens":"nfl-baltimore-ravens.png",
+      "Buffalo Bills":"nfl-buffalo-bills.png",
+      "Carolina Panthers":"nfl-carolina-panthers.png",
+      "Chicago Bears":"nfl-chicago-bears.png",
+      "Cincinnati Bengals":"nfl-cincinnati-bengals.png",
+      "Cleveland Browns":"nfl-cleveland-browns.png",
+      "Dallas Cowboys":"nfl-dallas-cowboys.png",
+      "Denver Broncos":"nfl-denver-broncos.png",
+      "Detroit Lions":"nfl-detroit-lions.png",
+      "Green Bay Packers":"nfl-green-bay-packers.png",
+      "Houston Texans":"nfl-houston-texans.png",
+      "Indianapolis Colts":"nfl-indianapolis-colts.png",
+      "Jacksonville Jaguars":"nfl-jacksonville-jaguars.png",
+      "Kansas City Chiefs":"nfl-kansas-city-chiefs.png",
+      "Las Vegas Raiders":"nfl-las-vegas-raiders.png",
+      "Los Angeles Chargers":"nfl-los-angeles-chargers.png",
+      "Los Angeles Rams":"nfl-los-angeles-rams.png",
+      "Miami Dolphins":"nfl-miami-dolphins.png",
+      "Minnesota Vikings":"nfl-minnesota-vikings.png",
+      "New England Patriots":"nfl-new-england-patriots.png",
+      "New Orleans Saints":"nfl-new-orleans-saints.png",
+      "New York Giants":"nfl-new-york-giants.png",
+      "New York Jets":"nfl-new-york-jets.png",
+      "Philadelphia Eagles":"nfl-philadelphia-eagles.png",
+      "Pittsburgh Steelers":"nfl-pittsburgh-steelers.png",
+      "San Francisco 49ers":"nfl-san-francisco-49ers.png",
+      "Seattle Seahawks":"nfl-seattle-seahawks.png",
+      "Tampa Bay Buccaneers":"nfl-tampa-bay-buccaneers.png",
+      "Tennessee Titans":"nfl-tennessee-titans.png",
+      "Washington Commanders":"nfl-washington-commanders.png"
+    };
 
-const homeDrawArea=document.getElementById('home-draw-area');
-const visitorDrawArea=document.getElementById('visitor-draw-area');
-const homeAxis=document.getElementById('home-axis');
-const visitorAxis=document.getElementById('visitor-axis');
-const homeProgress=document.getElementById('home-progress');
-const visitorProgress=document.getElementById('visitor-progress');
-const auditLog=document.getElementById('audit-log');
+    const DRAW_SPEED_MS = 1500;
+    const PAUSE_AFTER_TEN_MS = 3000;
+    const FINAL_WHISTLE_GAP_MS = 900;
+    let isDrawing = false;
 
-const soundEnabled=document.getElementById('sound-enabled');
-const volume=document.getElementById('volume');
+    const drawButton = document.getElementById('draw-button');
+    const resetButton = document.getElementById('reset-button');
+    const statusDiv = document.getElementById('status');
 
-const cheer=new Audio('cheer.mp3');
-const whistle=new Audio('whistle.mp3');
-cheer.loop=true;
+    const homeDrawArea = document.getElementById('home-draw-area');
+    const visitorDrawArea = document.getElementById('visitor-draw-area');
+    const homeAxis = document.getElementById('home-axis');
+    const visitorAxis = document.getElementById('visitor-axis');
+    const homeProgress = document.getElementById('home-progress');
+    const visitorProgress = document.getElementById('visitor-progress');
+    const auditLog = document.getElementById('audit-log');
 
-function setVolume(){
-  const v=volume.value/100;
-  cheer.volume=v*.7;
-  whistle.volume=v;
-}
-setVolume();
-volume.oninput=setVolume;
+    const soundEnabled = document.getElementById('sound-enabled');
+    const volume = document.getElementById('volume');
 
-function play(a){
-  if(!soundEnabled.checked) return;
-  a.currentTime=0;
-  a.play().catch(()=>{});
-}
-function stop(a){a.pause();a.currentTime=0;}
+    const cheer = new Audio('cheer.mp3');
+    const whistle = new Audio('whistle.mp3');
+    cheer.loop = true;
 
-function shuffle(a){
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
+    const visitorSelect = document.getElementById('visitor-select');
+    const homeSelect = document.getElementById('home-select');
+    const teamHelper = document.getElementById('team-helper');
+
+    const homeLogoEl = document.getElementById('home-logo');
+    const visitorLogoEl = document.getElementById('visitor-logo');
+    const homeTextEl = document.getElementById('home-text');
+    const visitorTextEl = document.getElementById('visitor-text');
+
+    let selectedVisitor = "";
+    let selectedHome = "";
+
+    const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+    function setVolume(){
+      const v = Math.max(0, Math.min(100, Number(volume.value))) / 100;
+      cheer.volume = v * 0.7;
+      whistle.volume = v;
+    }
+    setVolume();
+    volume.addEventListener("input", setVolume);
+
+    function play(a){
+      if(!soundEnabled.checked) return;
+      a.currentTime = 0;
+      a.play().catch(()=>{});
+    }
+    function stop(a){ a.pause(); a.currentTime = 0; }
+
+    function shuffle(a){
+      for(let i=a.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+
+    function build(strip){
+      strip.innerHTML='';
+      for(let i=0;i<10;i++){
+        const d=document.createElement('div');
+        d.className='axis-cell pending';
+        d.textContent='–';
+        strip.appendChild(d);
+      }
+    }
+
+    function setTeamHeader(side, teamName){
+      const imgEl = side === "home" ? homeLogoEl : visitorLogoEl;
+      const textEl = side === "home" ? homeTextEl : visitorTextEl;
+
+      if(!teamName){
+        imgEl.style.display="none"; imgEl.src=""; imgEl.alt="";
+        textEl.style.display="none"; textEl.textContent="";
+        return;
+      }
+
+      const logoSrc = TEAM_LOGOS[teamName] || "";
+
+      // show text by default
+      textEl.textContent = teamName;
+      textEl.style.display = "block";
+
+      if(!logoSrc){
+        imgEl.style.display="none"; imgEl.src=""; imgEl.alt="";
+        return;
+      }
+
+      imgEl.onerror = () => {
+        imgEl.style.display="none"; imgEl.src=""; imgEl.alt="";
+        textEl.textContent = teamName; textEl.style.display="block";
+      };
+      imgEl.onload = () => {
+        imgEl.style.display="block";
+        textEl.style.display="none";
+        textEl.textContent="";
+      };
+
+      imgEl.src = logoSrc;
+      imgEl.alt = teamName;
+      imgEl.style.display="block";
+    }
+
+    function setDrawButtonState(){
+      const ready = Boolean(selectedVisitor) && Boolean(selectedHome) && !isDrawing;
+      drawButton.disabled = !ready;
+
+      if(!selectedVisitor){
+        teamHelper.textContent="Choose the Visitor team first. Then select the Home team to unlock the draw.";
+      } else if(!selectedHome){
+        teamHelper.textContent="Now choose the Home team.";
+      } else {
+        teamHelper.textContent="Teams selected. You can start the draw!";
+      }
+    }
+
+    function populateTeamSelects(){
+      // keep first placeholder option
+      while (visitorSelect.options.length > 1) visitorSelect.remove(1);
+      while (homeSelect.options.length > 1) homeSelect.remove(1);
+
+      NFL_TEAMS.forEach(team => {
+        const o1=document.createElement("option"); o1.value=team; o1.textContent=team; visitorSelect.appendChild(o1);
+        const o2=document.createElement("option"); o2.value=team; o2.textContent=team; homeSelect.appendChild(o2);
+      });
+    }
+
+    function loadSavedTeams(){
+      const v = localStorage.getItem("squares_visitor") || "";
+      const h = localStorage.getItem("squares_home") || "";
+
+      if(v && NFL_TEAMS.includes(v)){
+        selectedVisitor=v; visitorSelect.value=v;
+        homeSelect.disabled=false;
+        setTeamHeader("visitor", v);
+      } else {
+        homeSelect.disabled=true;
+      }
+
+      if(h && NFL_TEAMS.includes(h) && h !== v){
+        selectedHome=h; homeSelect.value=h;
+        setTeamHeader("home", h);
+      }
+
+      setDrawButtonState();
+    }
+
+    visitorSelect.addEventListener("change", () => {
+      selectedVisitor = visitorSelect.value;
+      localStorage.setItem("squares_visitor", selectedVisitor);
+
+      homeSelect.disabled = !selectedVisitor;
+
+      if(!selectedVisitor){
+        selectedHome=""; homeSelect.value="";
+        localStorage.setItem("squares_home", "");
+        setTeamHeader("visitor", "");
+        setTeamHeader("home", "");
+      } else {
+        setTeamHeader("visitor", selectedVisitor);
+      }
+
+      if(selectedHome && selectedHome === selectedVisitor){
+        selectedHome=""; homeSelect.value="";
+        setTeamHeader("home", "");
+      }
+
+      setDrawButtonState();
+    });
+
+    homeSelect.addEventListener("change", () => {
+      selectedHome = homeSelect.value;
+      if(selectedHome === selectedVisitor){
+        selectedHome=""; homeSelect.value="";
+      }
+      localStorage.setItem("squares_home", selectedHome);
+      setTeamHeader("home", selectedHome);
+      setDrawButtonState();
+    });
+
+    async function drawOne(num, area, strip, idx, progress){
+      area.innerHTML = `<div class="football">${num}</div>`;
+      await sleep(DRAW_SPEED_MS);
+
+      strip.children[idx].classList.remove('pending');
+      strip.children[idx].textContent=num;
+      progress.textContent=`${idx+1} / 10`;
+
+      if(idx === 9){
+        play(whistle);
+        await sleep(PAUSE_AFTER_TEN_MS);
+      }
+    }
+
+    async function whistleTwice(){
+      play(whistle);
+      await sleep(FINAL_WHISTLE_GAP_MS);
+      play(whistle);
+    }
+
+    async function start(){
+      if(isDrawing) return;
+      if(!selectedVisitor || !selectedHome) return;
+
+      isDrawing=true;
+      setDrawButtonState();
+      resetButton.disabled=true;
+
+      build(homeAxis); build(visitorAxis);
+      homeProgress.textContent = visitorProgress.textContent = "0 / 10";
+      homeDrawArea.innerHTML = visitorDrawArea.innerHTML = "";
+      auditLog.textContent = "";
+
+      play(cheer);
+
+      const digits=[0,1,2,3,4,5,6,7,8,9];
+      const homeNums=shuffle([...digits]);
+      const visitorNums=shuffle([...digits]);
+
+      statusDiv.textContent="Drawing Home Team...";
+      for(let i=0;i<10;i++) await drawOne(homeNums[i], homeDrawArea, homeAxis, i, homeProgress);
+
+      statusDiv.textContent="Drawing Visitor Team...";
+      for(let i=0;i<10;i++) await drawOne(visitorNums[i], visitorDrawArea, visitorAxis, i, visitorProgress);
+
+      statusDiv.textContent="All Numbers Drawn!";
+      auditLog.textContent =
+        `Visitor: ${selectedVisitor}\nHome:    ${selectedHome}\n\n` +
+        `Home Axis:    ${homeNums.join(" ")}\nVisitor Axis: ${visitorNums.join(" ")}`;
+
+      await whistleTwice();
+      stop(cheer);
+
+      drawButton.textContent="Draw Again!";
+      resetButton.disabled=false;
+      isDrawing=false;
+      setDrawButtonState();
+    }
+
+    function reset(){
+      if(isDrawing) return;
+      stop(cheer);
+      statusDiv.textContent="";
+      homeDrawArea.innerHTML=visitorDrawArea.innerHTML="";
+      build(homeAxis); build(visitorAxis);
+      homeProgress.textContent=visitorProgress.textContent="0 / 10";
+      auditLog.textContent="";
+      drawButton.textContent="Start The Draw!";
+      setDrawButtonState();
+    }
+
+    drawButton.addEventListener("click", start);
+    resetButton.addEventListener("click", reset);
+
+    soundEnabled.addEventListener("change", () => {
+      if(!soundEnabled.checked) stop(cheer);
+    });
+
+    // init
+    populateTeamSelects();
+    build(homeAxis); build(visitorAxis);
+    loadSavedTeams();
+
+  } catch (err) {
+    document.body.innerHTML = `
+      <div style="font-family:Segoe UI,Tahoma,Verdana,sans-serif;padding:20px;max-width:900px;margin:20px auto;">
+        <h2 style="color:#b91c1c;margin:0 0 10px;">Script crashed</h2>
+        <pre style="background:#f3f4f6;border:1px solid #e5e7eb;padding:12px;border-radius:10px;overflow:auto;">${String(err)}</pre>
+      </div>`;
   }
-  return a;
-}
-
-function build(strip){
-  strip.innerHTML='';
-  for(let i=0;i<10;i++){
-    const d=document.createElement('div');
-    d.className='axis-cell pending';
-    d.textContent='–';
-    strip.appendChild(d);
-  }
-}
-
-async function drawOne(num,area,strip,idx,progress){
-  area.innerHTML=`<div class="football">${num}</div>`;
-  await new Promise(r=>setTimeout(r,DRAW_SPEED_MS));
-  strip.children[idx].classList.remove('pending');
-  strip.children[idx].textContent=num;
-  progress.textContent=`${idx+1} / 10`;
-  if(idx===9){
-    play(whistle);
-    await new Promise(r=>setTimeout(r,PAUSE_AFTER_TEN_MS));
-  }
-}
-
-async function whistleTwice(){
-  play(whistle);
-  await new Promise(r=>setTimeout(r,FINAL_WHISTLE_GAP_MS));
-  play(whistle);
-}
-
-async function start(){
-  if(isDrawing) return;
-  isDrawing=true;
-  drawButton.disabled=resetButton.disabled=true;
-
-  build(homeAxis);build(visitorAxis);
-  homeProgress.textContent=visitorProgress.textContent='0 / 10';
-  homeDrawArea.innerHTML=visitorDrawArea.innerHTML='';
-  auditLog.textContent='';
-
-  play(cheer);
-
-  const h=shuffle([0,1,2,3,4,5,6,7,8,9]);
-  const v=shuffle([0,1,2,3,4,5,6,7,8,9]);
-
-  statusDiv.textContent='Drawing Home Team...';
-  for(let i=0;i<10;i++) await drawOne(h[i],homeDrawArea,homeAxis,i,homeProgress);
-
-  statusDiv.textContent='Drawing Visitor Team...';
-  for(let i=0;i<10;i++) await drawOne(v[i],visitorDrawArea,visitorAxis,i,visitorProgress);
-
-  statusDiv.textContent='All Numbers Drawn!';
-  auditLog.textContent=`Home Axis: ${h.join(' ')}\nVisitor Axis: ${v.join(' ')}`;
-
-  await whistleTwice();
-  stop(cheer);
-
-  drawButton.textContent='Draw Again!';
-  drawButton.disabled=resetButton.disabled=false;
-  isDrawing=false;
-}
-
-drawButton.onclick=start;
-resetButton.onclick=()=>{
-  if(isDrawing) return;
-  stop(cheer);
-  statusDiv.textContent='';
-  homeDrawArea.innerHTML=visitorDrawArea.innerHTML='';
-  build(homeAxis);build(visitorAxis);
-  homeProgress.textContent=visitorProgress.textContent='0 / 10';
-  auditLog.textContent='';
-  drawButton.textContent='Start The Draw!';
-};
-
-build(homeAxis);build(visitorAxis);
+});
 </script>
 
 <!-- Service worker registration -->
@@ -354,4 +507,3 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
-
