@@ -1,5 +1,5 @@
 // Update this version number any time you change files on GitHub
-const CACHE_NAME = "squares-draw-v2";
+const CACHE_NAME = "squares-draw-v3";
 
 // Core files to cache for offline use + fast loading
 const ASSETS = [
